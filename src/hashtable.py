@@ -8,7 +8,7 @@ from functools import reduce
 
 
 class LinkedPair:
-    def __init__(self, key, value):
+    def __init__(self, key, value=None):
         self.key = key
         self.value = value
         self.next = None
@@ -39,6 +39,7 @@ class HashTable:
                     break
             else:
                 return elem
+
     def algorithm(self):
         return '''Algorithm:
 1.Create a Linked Pair passing in key and val\n
@@ -56,39 +57,11 @@ If the key is an int:
         Hash an arbitrary key and return an integer.
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
-       
-        # largeprime = self.primes(self.capacity)
-
         if type(pair.key) is str:
             summed = reduce(lambda acc,i: acc + ord(i),pair.key,0)
-            # index = summed % largeprime
             return summed
 
-        # index = key.key % largeprime
         return pair.key + random.randint(1,1000)
-
-        # if type(key.key) is str:
-        #     # for s in key:
-        #     #     asciis.append(ord(s))
-        #     summed = reduce(lambda acc,i: acc + ord(i),key.key,0)
-
-        #     index = summed % self.capacity
-
-        #     if self.storage[index] is None:
-        #         self.storage[index] = key
-        #     else: #key already exists at the hashed index:
-        #         while self.storage[index].next:
-        #             self.storage[index] = self.storage[index].next
-        #         self.storage[index].next = key
-        # else:
-        #     index = key.key % self.capacity
-        #     if self.storage[index] is None:
-        #         self.storage[index] = key
-        #     else:
-        #         while self.storage[index].next:
-        #             self.storage[index] = self.storage[index].next
-        #         self.storage[index].next = key
-        # return key
 
 
     def _hash_djb2(self, key):
@@ -131,7 +104,7 @@ If the key is an int:
 
         Fill this in.
         '''
-        pass
+        
 
 
     def retrieve(self, key):
@@ -142,8 +115,12 @@ If the key is an int:
 
         Fill this in.
         '''
-        pass
-
+        pair = LinkedPair(key,None)
+        index = self._hash_mod(pair)
+        if self.storage[index] is None:
+            raise KeyError(key)
+        return self.storage[index].value
+        # return self.storage[index].value
 
     def resize(self):
         '''
@@ -163,13 +140,17 @@ pair = LinkedPair('hello','world')
 # print(a)
 
 
-u = ht.insert('hello','world')
-w = ht.insert('hello','world')
-x = ht.insert('hello','world')
-y = ht.insert('hello','world')
-z = ht.insert('hello','world')
+u = ht.insert('hello','amir')
+w = ht.insert('hello','sofia')
+x = ht.insert('hello','sheena')
+y = ht.insert('hello','nadia')
+z = ht.insert('hello','ibby')
 
-print(ht.storage[2])
+# print(ht.storage[2])
+
+ht.retrieve('hi')
+
+
 
 
 
