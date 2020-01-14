@@ -26,9 +26,13 @@ class HashTable:
         return str(self.storage)
 
     def primes(self,num):
-        span = [*range(num+100,num,-1)]
+        # span = [*range(num,2,-1)]
+        span = [num for num in range(num-1,1,-1)]
+        print(span)
+        print(range(span[0],1,-1))
         for elem in span:
-            for i in range(elem-1,2,-1):
+            for i in range(elem-1,1,-1):
+                print('elem',elem,'i',i)
                 if (elem % i) == 0:
                     break
             else:
@@ -52,6 +56,7 @@ class HashTable:
         if type(key.key) is str:
             summed = reduce(lambda acc,i: acc + ord(i),key.key,0)
             index = summed % largeprime
+            print('summed',summed,'largeprime', largeprime)
             return index
         #key.key is int
         index = key.key % largeprime
@@ -146,26 +151,16 @@ ht = HashTable(10)
 pair = LinkedPair('hello','world')
 x = ht._hash(pair)
 print(x)
-# print([key.value for key in ht.storage if key][0])
-# pair2 = LinkedPair(50,'testing')
-# x = ht._hash(pair2)
 
 indexes = []
-for x in range(6):
-    key = random.randint(1,2000)
-    # random.choice(string.ascii_letters)
-    # val = ''.join(random.choice(string.ascii_letters) for s in range(key))
-    val = ''.join(random.sample(string.ascii_letters,10))
-    pair = LinkedPair(key,val)
-    x = ht._hash(pair)
-    indexes.append(x)
-
-
-print(indexes)
-
-
-
-
+# for x in range(6):
+#     key = random.randint(1,2000)
+#     # random.choice(string.ascii_letters)
+#     # val = ''.join(random.choice(string.ascii_letters) for s in range(key))
+#     val = ''.join(random.sample(string.ascii_letters,10))
+#     pair = LinkedPair(key,val)
+#     x = ht._hash(pair)
+#     indexes.append(x)
 
 
 
