@@ -12,6 +12,8 @@ class LinkedPair:
         self.key = key
         self.value = value
         self.next = None
+    def __repr__(self):
+        return str({'key': self.key, 'value': self.value, 'next':self.next})
 
 class HashTable:
     '''
@@ -107,40 +109,19 @@ If the key is an int:
 
 
     def insert(self, key, value):
-        '''
-        Store the value with the given key.
 
-        Hash collisions should be handled with Linked List Chaining.
-
-        Fill this in.
-        '''
         pair = LinkedPair(key,value)
         index = self._hash_mod(pair)
 
-        print('index',index)
-        print(pair.key)
-        print(pair.value)
-        print(self.storage)
-
+        # print('self.storage[index]',self.storage[index])
         if self.storage[index] is None:
             self.storage[index] = pair
         else: #key already exists at the hashed index:
-            while self.storage[index].next:
-                self.storage[index] = self.storage[index].next
-                self.storage[index].next = pair
-    
+            pointer = self.storage[index]
+            while pointer.next:
+                pointer = pointer.next
+            pointer.next = pair
         return (pair.key,pair.value)
-        # else:
-        #     index = key.key % self.capacity
-        #     if self.storage[index] is None:
-        #         self.storage[index] = key
-        #     else:
-        #         while self.storage[index].next:
-        #             self.storage[index] = self.storage[index].next
-        #         self.storage[index].next = key
-        # return key
-
-
 
     def remove(self, key):
         '''
@@ -174,35 +155,42 @@ If the key is an int:
         pass
 
 ht = HashTable(10)
-
 pair = LinkedPair('hello','world')
 # x = ht._hash(pair)
 # x = ht._hash_mod(pair)
 # print(x)
 # a = ht.algorithm()
 # print(a)
+
+
+u = ht.insert('hello','world')
+w = ht.insert('hello','world')
 x = ht.insert('hello','world')
-print(x)
+y = ht.insert('hello','world')
+z = ht.insert('hello','world')
+
+print(ht.storage[2])
 
 
-hashed_indexes = []
+
+# hashed_indexes = []
 
 #hashed strings***************
-for s in range(6):
-    key = random.randint(1,2000)
-    # val = ''.join(random.choice(string.ascii_letters) for s in range(key))
-    val = ''.join(random.sample(string.ascii_letters,10))
-    pair = LinkedPair(key,val)
-    x = ht._hash_mod(pair)
-    hashed_indexes.append(x)
+# for s in range(6):
+#     key = random.randint(1,2000)
+#     # val = ''.join(random.choice(string.ascii_letters) for s in range(key))
+#     val = ''.join(random.sample(string.ascii_letters,10))
+#     pair = LinkedPair(key,val)
+#     x = ht._hash_mod(pair)
+#     hashed_indexes.append(x)
 
 #hashed integers***************
-for n in range(8):
-    key = random.randint(1,2000)
-    val = random.randint(1,2000)
-    pair = LinkedPair(key,val)
-    x = ht._hash_mod(pair)
-    hashed_indexes.append(x)
+# for n in range(8):
+#     key = random.randint(1,2000)
+#     val = random.randint(1,2000)
+#     pair = LinkedPair(key,val)
+#     x = ht._hash_mod(pair)
+#     hashed_indexes.append(x)
 
 # print(hashed_indexes)
 # indexes = []
