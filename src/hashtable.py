@@ -3,6 +3,7 @@
 # '''
 import hashlib
 from functools import reduce
+import random, string
 
 
 class LinkedPair:
@@ -23,7 +24,6 @@ class HashTable:
     def __repr__(self):
         return str(self.storage)
 
-
     def _hash(self, key):
         '''
         Hash an arbitrary key and return an integer.
@@ -31,29 +31,41 @@ class HashTable:
         '''
         '''
         Algorithm:
-            Create a Linked Pair
-            add all the ascii values of the string together.
-            % capacity. store in the index
+            Create a Linked Pair passing in key and val
+            add all the ascii values of the string together. or take the int at face value
+            % capacity. store in the index.  
+            check if there is a next
         '''
-
         if type(key.key) is str:
-            # for s in key:
-            #     asciis.append(ord(s))
             summed = reduce(lambda acc,i: acc + ord(i),key.key,0)
-
             index = summed % self.capacity
-            if self.storage[index] is None:
-                self.storage[index] = key
-            else: #key already exists at the hashed index:
-                self.storage[index].next = key
-        else:
-            index = key.key % self.capacity
-            if self.storage[index] is None:
-                self.storage[index] = key
-            else:
-                self.storage[index].next = key
+            return index
+        #key.key is int
+        index = key.key % self.capacity
+        return index
 
-        return key
+        # if type(key.key) is str:
+        #     # for s in key:
+        #     #     asciis.append(ord(s))
+        #     summed = reduce(lambda acc,i: acc + ord(i),key.key,0)
+
+        #     index = summed % self.capacity
+
+        #     if self.storage[index] is None:
+        #         self.storage[index] = key
+        #     else: #key already exists at the hashed index:
+        #         while self.storage[index].next:
+        #             self.storage[index] = self.storage[index].next
+        #         self.storage[index].next = key
+        # else:
+        #     index = key.key % self.capacity
+        #     if self.storage[index] is None:
+        #         self.storage[index] = key
+        #     else:
+        #         while self.storage[index].next:
+        #             self.storage[index] = self.storage[index].next
+        #         self.storage[index].next = key
+        # return key
 
 
     def _hash_djb2(self, key):
@@ -119,13 +131,25 @@ class HashTable:
 ht = HashTable(10)
 
 pair = LinkedPair('hello','world')
-
-ht._hash(pair)
+x = ht._hash(pair)
 
 # print([key.value for key in ht.storage if key][0])
+# pair2 = LinkedPair(50,'testing')
+# x = ht._hash(pair2)
 
-pair2 = LinkedPair(50,'testing')
-x = ht._hash(pair2)
+# for x in range(6):
+#     key = random.randint(1,2000)
+#     random.choice(string.ascii_letters)
+#     # val = ''.join(random.choice(string.ascii_letters) for s in range(key))
+#     val = ''.join(random.sample(string.ascii_letters,10))
+#     pair = LinkedPair(key,val)
+#     ht._hash(pair)
+
+# print(ht)
+
+
+
+
 
 
 
