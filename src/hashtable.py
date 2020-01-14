@@ -37,30 +37,33 @@ class HashTable:
                     break
             else:
                 return elem
+    def algorithm(self):
+        return '''Algorithm:
+1.Create a Linked Pair passing in key and val\n
+2.If key is string:
+    -Sum all the ascii values of the string together.
+If the key is an int:
+    - add a random # to the int\n
+3. Calculate Index using the division method: Integer % Storage Capacity\n
+4. Check if there is a key at the index calculated.  If there is, traverse till no key.next\n
+5. Store the val of the key at the end of the linked list of the index position calculated\n
+'''
             
-
-    def _hash(self, key):
+    def _hash(self, pair):
         '''
         Hash an arbitrary key and return an integer.
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
-        '''
-        Algorithm:
-            Create a Linked Pair passing in key and val
-            add all the ascii values of the string together. or take the int at face value
-            % capacity. store in the index.  
-            check if there is a next
-        '''
-        largeprime = self.primes(self.capacity)
+       
+        # largeprime = self.primes(self.capacity)
 
-        if type(key.key) is str:
-            summed = reduce(lambda acc,i: acc + ord(i),key.key,0)
-            index = summed % largeprime
-            print('summed',summed,'largeprime', largeprime)
-            return index
-        #key.key is int
-        index = key.key % largeprime
-        return index
+        if type(pair.key) is str:
+            summed = reduce(lambda acc,i: acc + ord(i),pair.key,0)
+            # index = summed % largeprime
+            return summed
+
+        # index = key.key % largeprime
+        return pair.key + random.randint(1,1000)
 
         # if type(key.key) is str:
         #     # for s in key:
@@ -95,12 +98,12 @@ class HashTable:
         pass
 
 
-    def _hash_mod(self, key):
+    def _hash_mod(self, pair):
         '''
         Take an arbitrary key and return a valid integer index
         within the storage capacity of the hash table.
         '''
-        return self._hash(key) % self.capacity
+        return self._hash(pair) % self.capacity
 
 
     def insert(self, key, value):
@@ -111,7 +114,31 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        pair = LinkedPair(key,value)
+        index = self._hash_mod(pair)
+
+        print('index',index)
+        print(pair.key)
+        print(pair.value)
+        print(self.storage)
+
+        if self.storage[index] is None:
+            self.storage[index] = pair
+        else: #key already exists at the hashed index:
+            while self.storage[index].next:
+                self.storage[index] = self.storage[index].next
+                self.storage[index].next = pair
+    
+        return (pair.key,pair.value)
+        # else:
+        #     index = key.key % self.capacity
+        #     if self.storage[index] is None:
+        #         self.storage[index] = key
+        #     else:
+        #         while self.storage[index].next:
+        #             self.storage[index] = self.storage[index].next
+        #         self.storage[index].next = key
+        # return key
 
 
 
@@ -149,18 +176,40 @@ class HashTable:
 ht = HashTable(10)
 
 pair = LinkedPair('hello','world')
-x = ht._hash(pair)
+# x = ht._hash(pair)
+# x = ht._hash_mod(pair)
+# print(x)
+# a = ht.algorithm()
+# print(a)
+x = ht.insert('hello','world')
 print(x)
 
-indexes = []
-# for x in range(6):
-#     key = random.randint(1,2000)
-#     # random.choice(string.ascii_letters)
-#     # val = ''.join(random.choice(string.ascii_letters) for s in range(key))
-#     val = ''.join(random.sample(string.ascii_letters,10))
-#     pair = LinkedPair(key,val)
-#     x = ht._hash(pair)
-#     indexes.append(x)
+
+hashed_indexes = []
+
+#hashed strings***************
+for s in range(6):
+    key = random.randint(1,2000)
+    # val = ''.join(random.choice(string.ascii_letters) for s in range(key))
+    val = ''.join(random.sample(string.ascii_letters,10))
+    pair = LinkedPair(key,val)
+    x = ht._hash_mod(pair)
+    hashed_indexes.append(x)
+
+#hashed integers***************
+for n in range(8):
+    key = random.randint(1,2000)
+    val = random.randint(1,2000)
+    pair = LinkedPair(key,val)
+    x = ht._hash_mod(pair)
+    hashed_indexes.append(x)
+
+# print(hashed_indexes)
+# indexes = []
+# for v in hashed_ints:
+#     indexes.append((v % 10))
+
+# print(indexes)
 
 
 
