@@ -2,8 +2,9 @@
 # Linked List hash table key/value pair
 # '''
 import hashlib
+import random
+import string
 from functools import reduce
-import random, string
 
 
 class LinkedPair:
@@ -24,6 +25,16 @@ class HashTable:
     def __repr__(self):
         return str(self.storage)
 
+    def primes(self,num):
+        span = [*range(num+100,num,-1)]
+        for elem in span:
+            for i in range(elem-1,2,-1):
+                if (elem % i) == 0:
+                    break
+            else:
+                return elem
+            
+
     def _hash(self, key):
         '''
         Hash an arbitrary key and return an integer.
@@ -36,12 +47,14 @@ class HashTable:
             % capacity. store in the index.  
             check if there is a next
         '''
+        largeprime = self.primes(self.capacity)
+
         if type(key.key) is str:
             summed = reduce(lambda acc,i: acc + ord(i),key.key,0)
-            index = summed % self.capacity
+            index = summed % largeprime
             return index
         #key.key is int
-        index = key.key % self.capacity
+        index = key.key % largeprime
         return index
 
         # if type(key.key) is str:
@@ -132,20 +145,23 @@ ht = HashTable(10)
 
 pair = LinkedPair('hello','world')
 x = ht._hash(pair)
-
+print(x)
 # print([key.value for key in ht.storage if key][0])
 # pair2 = LinkedPair(50,'testing')
 # x = ht._hash(pair2)
 
-# for x in range(6):
-#     key = random.randint(1,2000)
-#     random.choice(string.ascii_letters)
-#     # val = ''.join(random.choice(string.ascii_letters) for s in range(key))
-#     val = ''.join(random.sample(string.ascii_letters,10))
-#     pair = LinkedPair(key,val)
-#     ht._hash(pair)
+indexes = []
+for x in range(6):
+    key = random.randint(1,2000)
+    # random.choice(string.ascii_letters)
+    # val = ''.join(random.choice(string.ascii_letters) for s in range(key))
+    val = ''.join(random.sample(string.ascii_letters,10))
+    pair = LinkedPair(key,val)
+    x = ht._hash(pair)
+    indexes.append(x)
 
-# print(ht)
+
+print(indexes)
 
 
 
