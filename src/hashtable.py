@@ -1,6 +1,10 @@
 # '''
 # Linked List hash table key/value pair
 # '''
+import hashlib
+from functools import reduce
+
+
 class LinkedPair:
     def __init__(self, key, value):
         self.key = key
@@ -16,14 +20,40 @@ class HashTable:
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
 
+    def __repr__(self):
+        return str(self.storage)
+
 
     def _hash(self, key):
         '''
         Hash an arbitrary key and return an integer.
-
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
-        return hash(key)
+        '''
+        Algorithm:
+            Create a Linked Pair
+            add all the ascii values of the string together.
+            % capacity. store in the index
+        '''
+
+        if type(key.key) is str:
+            # for s in key:
+            #     asciis.append(ord(s))
+            summed = reduce(lambda acc,i: acc + ord(i),key.key,0)
+
+            index = summed % self.capacity
+            if self.storage[index] is None:
+                self.storage[index] = key
+            else: #key already exists at the hashed index:
+                self.storage[index].next = key
+        else:
+            index = key.key % self.capacity
+            if self.storage[index] is None:
+                self.storage[index] = key
+            else:
+                self.storage[index].next = key
+
+        return key
 
 
     def _hash_djb2(self, key):
@@ -86,32 +116,50 @@ class HashTable:
         '''
         pass
 
+ht = HashTable(10)
+
+pair = LinkedPair('hello','world')
+
+ht._hash(pair)
+
+# print([key.value for key in ht.storage if key][0])
+
+pair2 = LinkedPair(50,'testing')
+x = ht._hash(pair2)
 
 
-if __name__ == "__main__":
-    ht = HashTable(2)
 
-    ht.insert("line_1", "Tiny hash table")
-    ht.insert("line_2", "Filled beyond capacity")
-    ht.insert("line_3", "Linked list saves the day!")
 
-    print("")
 
-    # Test storing beyond capacity
-    print(ht.retrieve("line_1"))
-    print(ht.retrieve("line_2"))
-    print(ht.retrieve("line_3"))
 
-    # Test resizing
-    old_capacity = len(ht.storage)
-    ht.resize()
-    new_capacity = len(ht.storage)
+# print([key.value for key in ht.storage if key])
 
-    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
 
-    # Test if data intact after resizing
-    print(ht.retrieve("line_1"))
-    print(ht.retrieve("line_2"))
-    print(ht.retrieve("line_3"))
 
-    print("")
+# if __name__ == "__main__":
+#     ht = HashTable(2)
+
+#     ht.insert("line_1", "Tiny hash table")
+#     ht.insert("line_2", "Filled beyond capacity")
+#     ht.insert("line_3", "Linked list saves the day!")
+
+#     print("")
+
+#     # Test storing beyond capacity
+#     print(ht.retrieve("line_1"))
+#     print(ht.retrieve("line_2"))
+#     print(ht.retrieve("line_3"))
+
+#     # Test resizing
+#     old_capacity = len(ht.storage)
+#     ht.resize()
+#     new_capacity = len(ht.storage)
+
+#     print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+
+#     # Test if data intact after resizing
+#     print(ht.retrieve("line_1"))
+#     print(ht.retrieve("line_2"))
+#     print(ht.retrieve("line_3"))
+
+#     print("")
