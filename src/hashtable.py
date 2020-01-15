@@ -121,52 +121,50 @@ If the key is an int:
                     # pointer = pointer.next  #this one doesn't
                     break
                 # self.display(pointer,prev,' pointer == pair')
-                prev.next = pointer.next
-                del pointer
-                break
+                else:
+                    prev.next = pointer.next
+                    del pointer
+                    break
             else:
                 prev = pointer
                 pointer = pointer.next
-            
-            # self.display(pointer,prev,' post shifting')
-            # self.storage[index] = self.storage[index].next
         return -1
 
     def retrieve(self, key):
-        '''
-        Retrieve the value stored with the given key.
-
-        Returns None if the key is not found.
-
-        Fill this in.
-        '''
         pair = LinkedPair(key,None)
         index = self._hash_mod(pair)
         if self.storage[index] is None:
             raise KeyError(key)
-            return
+            return None
         pointer = self.storage[index]
         while pointer.next:
             pointer = pointer.next
         return pointer.value
-        # return self.storage[index].value
 
     def resize(self):
         '''
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
-
         Fill this in.
         '''
-        pass
+        self.capacity += self.capacity
+        # pairs1 = [pair for pair in self.storage if pair]
+        pairs = filter(lambda v: v,self.storage)
 
-ht = HashTable(1)
-pair = LinkedPair('hello','world')
-# x = ht._hash(pair)
-# x = ht._hash_mod(pair)
-# print(x)
-# a = ht.algorithm()
-# print(a)
+        self.storage = [None]*self.capacity
+
+        for pair in list(pairs):
+            # key,val = pair #cannot unpack LinkedPair object error
+            if pair.next is not None:
+                p = pair
+                while p.next:
+                    self.insert(p.next.key,p.next.value)
+                    p = p.next
+            self.insert(pair.key,pair.value)
+        
+        return self.storage
+
+ht = HashTable(10)
 
 t = ht.insert('zero', 'abe')
 
@@ -180,6 +178,14 @@ y = ht.insert('four','nadia')
 
 z = ht.insert('five','ibby')
 
+print(ht.storage)
+print('\n')
+
+store = ht.resize()
+print(store)
+
+
+
 # print(ht.storage[0].next.next.next.next.next)
 # print(ht.storage[0])
 
@@ -189,15 +195,6 @@ z = ht.insert('five','ibby')
 #     print(point)
 #     print('\n')
 #     point = point.next
-
-print(ht.storage[0])
-print('\n')
-
-ht.remove('zero')
-ht.remove('three')
-
-
-print('after remove', ht.storage[0])
 
 # point = ht.storage[0].next
 # point = ht.storage[0]
