@@ -85,15 +85,19 @@ If the key is an int:
         pair = LinkedPair(key,value)
         index = self._hash_mod(pair)
 
-        # print('self.storage[index]',self.storage[index])
         if self.storage[index] is None:
             self.storage[index] = pair
         else: #key already exists at the hashed index:
             pointer = self.storage[index]
-            while pointer.next:
+            while pointer:
+                if pointer.key == pair.key:
+                    pointer.value = pair.value
+                    return pointer
+                if pointer.next is None:
+                    pointer.next = pair
+                    break
                 pointer = pointer.next
-            pointer.next = pair
-        return (pair.key,pair.value)
+        return pair
     
     def display(self,po,pr,mes):
         print('pointer' + mes, po.key)
@@ -164,6 +168,36 @@ If the key is an int:
             self.insert(pair.key,pair.value)
         
         return self.storage
+
+
+
+if __name__ == "__main__":
+    ht = HashTable(2)
+
+    ht.insert("line_1", "Tiny hash table")
+    ht.insert("line_2", "Filled beyond capacity")
+    ht.insert("line_3", "Linked list saves the day!")
+
+    print("")
+
+    # Test storing beyond capacity
+    print(ht.retrieve("line_1"))
+    print(ht.retrieve("line_2"))
+    print(ht.retrieve("line_3"))
+
+    # Test resizing
+    old_capacity = len(ht.storage)
+    ht.resize()
+    new_capacity = len(ht.storage)
+
+    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+
+    # Test if data intact after resizing
+    print(ht.retrieve("line_1"))
+    print(ht.retrieve("line_2"))
+    print(ht.retrieve("line_3"))
+
+    print("")
 
 # ht = HashTable(10)
 
@@ -245,63 +279,3 @@ If the key is an int:
 # print(indexes)
 # print([key.value for key in ht.storage if key])
 
-if __name__ == "__main__":
-        ht = HashTable(8)
-        ht.insert("key-0", "val-0")
-        ht.insert("key-1", "val-1")
-        ht.insert("key-2", "val-2")
-        ht.insert("key-3", "val-3")
-        ht.insert("key-4", "val-4")
-        ht.insert("key-5", "val-5")
-        ht.insert("key-6", "val-6")
-        ht.insert("key-7", "val-7")
-        ht.insert("key-8", "val-8")
-        ht.insert("key-9", "val-9")
-
-        v0 = ht.retrieve('key-5')
-        print(v0)
-
-        ht.remove("key-9")
-        ht.remove("key-8")
-        ht.remove("key-7")
-        ht.remove("key-6")
-        ht.remove("key-5")
-        ht.remove("key-4")
-        ht.remove("key-3")
-        ht.remove("key-2")
-        ht.remove("key-1")
-        ht.remove("key-0")
-        
-        zero = ht.retrieve('key-0')
-        print(zero)
-
-        print(ht.storage)
-
-
-
-#     ht = HashTable(2)
-
-#     ht.insert("line_1", "Tiny hash table")
-#     ht.insert("line_2", "Filled beyond capacity")
-#     ht.insert("line_3", "Linked list saves the day!")
-
-#     print("")
-
-#     # Test storing beyond capacity
-#     print(ht.retrieve("line_1"))
-#     print(ht.retrieve("line_2"))
-#     print(ht.retrieve("line_3"))
-
-#     # Test resizing
-#     old_capacity = len(ht.storage)
-#     ht.resize()
-#     new_capacity = len(ht.storage)
-
-#     print(f"\nResized from {old_capacity} to {new_capacity}.\n")
-
-#     # Test if data intact after resizing
-#     print(ht.retrieve("line_1"))
-#     print(ht.retrieve("line_2"))
-#     print(ht.retrieve("line_3"))
-
-#     print("")
