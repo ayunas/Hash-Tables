@@ -6,7 +6,6 @@ import random
 import string
 from functools import reduce
 
-
 class LinkedPair:
     def __init__(self, key, value=None):
         self.key = key
@@ -116,7 +115,7 @@ If the key is an int:
             # self.display(pointer,prev, ' preshifting of pointer')
             if pointer.key == pair.key:
                 if prev is None:  #at the beginning of the linked list, set the head to equal the next value
-                    print(self.storage[index] == pointer)
+                    # print(self.storage[index] == pointer)
                     self.storage[index] = self.storage[index].next #this modifies the value
                     # pointer = pointer.next  #this one doesn't
                     break
@@ -133,13 +132,15 @@ If the key is an int:
     def retrieve(self, key):
         pair = LinkedPair(key,None)
         index = self._hash_mod(pair)
-        if self.storage[index] is None:
-            raise KeyError(key)
-            return None
+
         pointer = self.storage[index]
-        while pointer.next:
+
+        while pointer:
+            if pointer.key == key:
+                return pointer.value
             pointer = pointer.next
-        return pointer.value
+        # raise KeyError(key)
+        return None
 
     def resize(self):
         '''
@@ -164,25 +165,28 @@ If the key is an int:
         
         return self.storage
 
-ht = HashTable(10)
+# ht = HashTable(10)
 
-t = ht.insert('zero', 'abe')
+# t = ht.insert('zero', 'abe')
 
-u = ht.insert('one','amir')
+# v = ht.retrieve('zero')
 
-w = ht.insert('two','sofia')
 
-x = ht.insert('three','sheena')
+# u = ht.insert('one','amir')
 
-y = ht.insert('four','nadia')
+# w = ht.insert('two','sofia')
 
-z = ht.insert('five','ibby')
+# x = ht.insert('three','sheena')
 
-print(ht.storage)
-print('\n')
+# y = ht.insert('four','nadia')
 
-store = ht.resize()
-print(store)
+# z = ht.insert('five','ibby')
+
+# print(ht.storage)
+# print('\n')
+
+# store = ht.resize()
+# print(store)
 
 
 
@@ -214,12 +218,6 @@ print(store)
 # z = ht.retrieve('hello')
 # print(z)
 
-
-
-
-
-
-
 # hashed_indexes = []
 
 #hashed strings***************
@@ -245,17 +243,42 @@ print(store)
 #     indexes.append((v % 10))
 
 # print(indexes)
-
-
-
-
-
-
 # print([key.value for key in ht.storage if key])
 
+if __name__ == "__main__":
+        ht = HashTable(8)
+        ht.insert("key-0", "val-0")
+        ht.insert("key-1", "val-1")
+        ht.insert("key-2", "val-2")
+        ht.insert("key-3", "val-3")
+        ht.insert("key-4", "val-4")
+        ht.insert("key-5", "val-5")
+        ht.insert("key-6", "val-6")
+        ht.insert("key-7", "val-7")
+        ht.insert("key-8", "val-8")
+        ht.insert("key-9", "val-9")
+
+        v0 = ht.retrieve('key-5')
+        print(v0)
+
+        ht.remove("key-9")
+        ht.remove("key-8")
+        ht.remove("key-7")
+        ht.remove("key-6")
+        ht.remove("key-5")
+        ht.remove("key-4")
+        ht.remove("key-3")
+        ht.remove("key-2")
+        ht.remove("key-1")
+        ht.remove("key-0")
+        
+        zero = ht.retrieve('key-0')
+        print(zero)
+
+        print(ht.storage)
 
 
-# if __name__ == "__main__":
+
 #     ht = HashTable(2)
 
 #     ht.insert("line_1", "Tiny hash table")
