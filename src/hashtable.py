@@ -95,17 +95,42 @@ If the key is an int:
                 pointer = pointer.next
             pointer.next = pair
         return (pair.key,pair.value)
+    
+    def display(self,po,pr,mes):
+        print('pointer' + mes, po.key)
+        print('prev' + mes, pr.key)
+        print('\n')
+        return
 
     def remove(self, key):
-        '''
-        Remove the value stored with the given key.
 
-        Print a warning if the key is not found.
+        pair = LinkedPair(key,None)
+        index = self._hash_mod(pair)
 
-        Fill this in.
-        '''
-        
+        # if self.storage[index] is None:
+        #     raise Exception('Key not found in the Hash Table')
 
+        pointer = self.storage[index]
+        prev = None
+        while pointer:
+            # self.display(pointer,prev, ' preshifting of pointer')
+            if pointer.key == pair.key:
+                if prev is None:  #at the beginning of the linked list, set the head to equal the next value
+                    print(self.storage[index] == pointer)
+                    self.storage[index] = self.storage[index].next #this modifies the value
+                    # pointer = pointer.next  #this one doesn't
+                    break
+                # self.display(pointer,prev,' pointer == pair')
+                prev.next = pointer.next
+                del pointer
+                break
+            else:
+                prev = pointer
+                pointer = pointer.next
+            
+            # self.display(pointer,prev,' post shifting')
+            # self.storage[index] = self.storage[index].next
+        return -1
 
     def retrieve(self, key):
         '''
@@ -119,7 +144,11 @@ If the key is an int:
         index = self._hash_mod(pair)
         if self.storage[index] is None:
             raise KeyError(key)
-        return self.storage[index].value
+            return
+        pointer = self.storage[index]
+        while pointer.next:
+            pointer = pointer.next
+        return pointer.value
         # return self.storage[index].value
 
     def resize(self):
@@ -131,7 +160,7 @@ If the key is an int:
         '''
         pass
 
-ht = HashTable(10)
+ht = HashTable(1)
 pair = LinkedPair('hello','world')
 # x = ht._hash(pair)
 # x = ht._hash_mod(pair)
@@ -139,16 +168,56 @@ pair = LinkedPair('hello','world')
 # a = ht.algorithm()
 # print(a)
 
+t = ht.insert('zero', 'abe')
 
-u = ht.insert('hello','amir')
-w = ht.insert('hello','sofia')
-x = ht.insert('hello','sheena')
-y = ht.insert('hello','nadia')
-z = ht.insert('hello','ibby')
+u = ht.insert('one','amir')
 
-# print(ht.storage[2])
+w = ht.insert('two','sofia')
 
-ht.retrieve('hi')
+x = ht.insert('three','sheena')
+
+y = ht.insert('four','nadia')
+
+z = ht.insert('five','ibby')
+
+# print(ht.storage[0].next.next.next.next.next)
+# print(ht.storage[0])
+
+# point = ht.storage[0]
+
+# while point:
+#     print(point)
+#     print('\n')
+#     point = point.next
+
+print(ht.storage[0])
+print('\n')
+
+ht.remove('zero')
+ht.remove('three')
+
+
+print('after remove', ht.storage[0])
+
+# point = ht.storage[0].next
+# point = ht.storage[0]
+# while point:
+#     print(point)
+#     print('\n')
+#     point = point.next
+
+
+
+
+# y = ht.remove('two')
+# print(ht.storage[0])
+
+
+
+# z = ht.retrieve('hello')
+# print(z)
+
+
 
 
 
