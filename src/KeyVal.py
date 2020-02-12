@@ -1,4 +1,11 @@
+import json
+
 class KeyVal:
     def __init__(self,key,val):
         self.key = key
-        self.val = val
+        self.value = val
+        self.next = None
+    
+    def __repr__(self):
+        kv = {self.key : self.value, 'next' : self.next}
+        return str(kv)
